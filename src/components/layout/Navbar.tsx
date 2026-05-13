@@ -3,7 +3,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { FiHeart, FiLogOut, FiMenu, FiMoon, FiPackage, FiShoppingCart, FiSun, FiUser, FiX } from "react-icons/fi";
+import {
+  FiHeart,
+  FiLogOut,
+  FiMenu,
+  FiMoon,
+  FiPackage,
+  FiShoppingCart,
+  FiSun,
+  FiUser,
+  FiX,
+} from "react-icons/fi";
 import { publicNavItems, ROUTES } from "@/constants/routes";
 import { logout } from "@/redux/features/authSlice";
 import { selectCartCount } from "@/redux/features/cartSlice";
@@ -24,6 +34,12 @@ export const Navbar = () => {
   const orders = useAppSelector(selectOrdersByEmail(user?.email));
   const orderCount = orders.length;
 
+  const closeMenuOnMobile = () => {
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      setIsOpen(false);
+    }
+  };
+
   const handleLogout = () => {
     dispatch(logout());
     router.push(ROUTES.home);
@@ -37,8 +53,12 @@ export const Navbar = () => {
             TN
           </span>
           <span>
-            <span className="block text-lg font-black tracking-tight">TechNova</span>
-            <span className="block text-xs font-semibold text-slate-500">Premium tech marketplace</span>
+            <span className="block text-lg font-black tracking-tight">
+              TechNova
+            </span>
+            <span className="block text-xs font-semibold text-slate-500">
+              Premium tech marketplace
+            </span>
           </span>
         </Link>
 
@@ -47,7 +67,8 @@ export const Navbar = () => {
             <Link
               className={cn(
                 "rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800",
-                pathname === item.href && "bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white"
+                pathname === item.href &&
+                  "bg-slate-100 text-slate-950 dark:bg-slate-800 dark:text-white",
               )}
               href={item.href}
               key={item.href}
@@ -65,23 +86,50 @@ export const Navbar = () => {
           >
             {mode === "dark" ? <FiSun /> : <FiMoon />}
           </button>
-          <Link aria-label="Wishlist" className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700" href={ROUTES.wishlist}>
+          <Link
+            aria-label="Wishlist"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700"
+            href={ROUTES.wishlist}
+          >
             <FiHeart />
           </Link>
-          <Link aria-label="Cart" className="relative grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700" href={ROUTES.cart}>
+          <Link
+            aria-label="Cart"
+            className="relative grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700"
+            href={ROUTES.cart}
+          >
             <FiShoppingCart />
-            {cartCount ? <span className="absolute -right-1 -top-1 rounded-full bg-brand-500 px-1.5 text-xs font-bold text-white">{cartCount}</span> : null}
+            {cartCount ? (
+              <span className="absolute -right-1 -top-1 rounded-full bg-brand-500 px-1.5 text-xs font-bold text-white">
+                {cartCount}
+              </span>
+            ) : null}
           </Link>
           {isAuthenticated ? (
             <>
-              <Link aria-label="Order history" className="relative grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700" href={ROUTES.orders}>
+              <Link
+                aria-label="Order history"
+                className="relative grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700"
+                href={ROUTES.orders}
+              >
                 <FiPackage />
-                {orderCount ? <span className="absolute -right-1 -top-1 rounded-full bg-brand-500 px-1.5 text-xs font-bold text-white">{orderCount}</span> : null}
+                {orderCount ? (
+                  <span className="absolute -right-1 -top-1 rounded-full bg-brand-500 px-1.5 text-xs font-bold text-white">
+                    {orderCount}
+                  </span>
+                ) : null}
               </Link>
-              <Link className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700" href={ROUTES.profile}>
+              <Link
+                className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700"
+                href={ROUTES.profile}
+              >
                 <FiUser />
               </Link>
-              <button aria-label="Logout" className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700" onClick={handleLogout}>
+              <button
+                aria-label="Logout"
+                className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 dark:border-slate-700"
+                onClick={handleLogout}
+              >
                 <FiLogOut />
               </button>
             </>
@@ -92,7 +140,10 @@ export const Navbar = () => {
           )}
         </div>
 
-        <button className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 lg:hidden dark:border-slate-700" onClick={() => setIsOpen((value) => !value)}>
+        <button
+          className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 lg:hidden dark:border-slate-700"
+          onClick={() => setIsOpen((value) => !value)}
+        >
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </nav>
@@ -101,16 +152,51 @@ export const Navbar = () => {
         <div className="container-shell pb-5 lg:hidden">
           <div className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-soft dark:border-slate-800 dark:bg-slate-900">
             {publicNavItems.map((item) => (
-              <Link className="rounded-xl px-4 py-3 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800" href={item.href} key={item.href} onClick={() => setIsOpen(false)}>
+              <Link
+                className="rounded-xl px-4 py-3 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800"
+                href={item.href}
+                key={item.href}
+                onClick={closeMenuOnMobile}
+              >
                 {item.label}
               </Link>
             ))}
             <div className="grid grid-cols-2 gap-2 pt-2">
-              <Link className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800" href={ROUTES.cart}>Cart</Link>
-              <Link className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800" href={ROUTES.wishlist}>Wishlist</Link>
-              <Link className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800" href={ROUTES.orders}>Orders</Link>
-              <button className="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold dark:bg-slate-800" onClick={() => dispatch(toggleTheme())}>Theme</button>
-              <Link className="rounded-xl bg-brand-500 px-4 py-3 text-center text-sm font-bold text-white" href={isAuthenticated ? ROUTES.profile : ROUTES.login}>
+              <Link
+                className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800"
+                href={ROUTES.cart}
+                onClick={closeMenuOnMobile}
+              >
+                Cart
+              </Link>
+              <Link
+                className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800"
+                href={ROUTES.wishlist}
+                onClick={closeMenuOnMobile}
+              >
+                Wishlist
+              </Link>
+              <Link
+                className="rounded-xl bg-slate-100 px-4 py-3 text-center text-sm font-bold dark:bg-slate-800"
+                href={ROUTES.orders}
+                onClick={closeMenuOnMobile}
+              >
+                Orders
+              </Link>
+              <button
+                className="rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold dark:bg-slate-800"
+                onClick={() => {
+                  dispatch(toggleTheme());
+                  closeMenuOnMobile();
+                }}
+              >
+                Theme
+              </button>
+              <Link
+                className="rounded-xl bg-brand-500 px-4 py-3 text-center text-sm font-bold text-white"
+                href={isAuthenticated ? ROUTES.profile : ROUTES.login}
+                onClick={closeMenuOnMobile}
+              >
                 {isAuthenticated ? "Profile" : "Login"}
               </Link>
             </div>
