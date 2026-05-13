@@ -1,0 +1,35 @@
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+
+  &:hover {
+    border-color: rgba(14, 165, 233, 0.45);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+    transform: translateY(-4px);
+  }
+}
+
+.imageWrap {
+  aspect-ratio: 4 / 3;
+  background: #f1f5f9;
+  overflow: hidden;
+  position: relative;
+}
+
+.productImage {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+  width: 100%;
+}
+
+.card:hover .productImage {
+  transform: scale(1.05);
+}
