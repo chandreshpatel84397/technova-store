@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AdminSidebar from "./AdminSidebar";
-import { Menu, X, Bell } from "lucide-react";
+import { Menu, Bell } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface DashboardLayoutProps {

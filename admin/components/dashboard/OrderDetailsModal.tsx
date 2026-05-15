@@ -3,8 +3,37 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Package, Truck, CreditCard, MapPin, User, Calendar, ExternalLink } from "lucide-react";
 
+import Image from "next/image";
+
+interface OrderItem {
+  title: string;
+  thumbnail: string;
+  price: number;
+  quantity: number;
+}
+
+interface Order {
+  _id: string;
+  createdAt: string;
+  items: OrderItem[];
+  totalPrice: number;
+  user?: {
+    name?: string;
+    email?: string;
+  };
+  shippingAddress?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+  orderStatus: string;
+  paymentStatus: string;
+}
+
 interface OrderDetailsModalProps {
-  order: any;
+  order: Order | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -54,11 +83,11 @@ export default function OrderDetailsModal({ order, isOpen, onClose }: OrderDetai
                       Order Items ({order.items?.length || 0})
                     </h3>
                     <div className="space-y-4">
-                      {order.items?.map((item: any, idx: number) => (
-                        <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 hover:border-brand-200 transition-colors bg-slate-50/30">
-                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-slate-100 flex-shrink-0">
-                            <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
-                          </div>
+                      {order.items?.map((item, idx) => (
+                         <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 hover:border-brand-200 transition-colors bg-slate-50/30">
+                           <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-white border border-slate-100 flex-shrink-0">
+                             <Image src={item.thumbnail} alt={item.title} fill className="object-cover" />
+                           </div>
                           <div className="flex-1 min-w-0">
                             <h4 className="font-bold text-slate-900 truncate">{item.title}</h4>
                             <p className="text-slate-500 text-sm font-medium">Quantity: {item.quantity}</p>

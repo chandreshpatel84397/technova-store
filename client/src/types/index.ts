@@ -5,6 +5,7 @@ export interface User {
 }
 
 export interface Product {
+  _id?: string;
   id: string;
   title: string;
   slug: string;
@@ -29,6 +30,7 @@ export interface CartItem {
 }
 
 export interface OrderItem {
+  _id?: string;
   productId: string;
   title: string;
   thumbnail: string;
@@ -37,6 +39,7 @@ export interface OrderItem {
 }
 
 export interface Order {
+  _id?: string;
   id: string;
   customerEmail: string;
   items: OrderItem[];

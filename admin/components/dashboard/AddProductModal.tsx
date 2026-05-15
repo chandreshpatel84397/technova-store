@@ -2,14 +2,29 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Upload, Search, Package, Tag, DollarSign, List, Briefcase, Plus, Check, Loader2, Image as ImageIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { adminService } from "@/services/adminService";
+import Image from "next/image";
+
+interface Product {
+  _id: string;
+  title: string;
+  slug: string;
+  thumbnail: string;
+  category: string;
+  brand: string;
+  price: number;
+  discount: number;
+  stock: number;
+  description?: string;
+  badge?: string;
+}
 
 interface AddProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  editProduct?: any;
+  editProduct?: Product | null;
 }
 
 const CATEGORIES = [
@@ -58,7 +73,7 @@ export default function AddProductModal({ isOpen, onClose, onSuccess, editProduc
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSearchImages = (query?: string) => {
+  const handleSearchImages = useCallback((query?: string) => {
     const searchTerm = query || imageSearch;
     setIsSearchingImages(true);
     // Simulate API call to Unsplash
@@ -79,7 +94,7 @@ export default function AddProductModal({ isOpen, onClose, onSuccess, editProduc
       setSearchResults(filtered);
       setIsSearchingImages(false);
     }, 600);
-  };
+  }, [imageSearch]);
 
   useEffect(() => {
     if (isOpen) {
@@ -110,7 +125,7 @@ export default function AddProductModal({ isOpen, onClose, onSuccess, editProduc
       }
       handleSearchImages(editProduct?.category || formData.category);
     }
-  }, [isOpen, editProduct]);
+  }, [isOpen, editProduct, formData.category, handleSearchImages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,8 +164,12 @@ export default function AddProductModal({ isOpen, onClose, onSuccess, editProduc
         discount: "0",
         badge: ""
       });
-    } catch (err: any) {
-      setError(err.message || `Failed to ${editProduct ? 'update' : 'create'} product`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || `Failed to ${editProduct ? 'update' : 'create'} product`);
+      } else {
+        setError(`An unknown error occurred while ${editProduct ? 'updating' : 'creating'} the product`);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -362,13 +381,11 @@ export default function AddProductModal({ isOpen, onClose, onSuccess, editProduc
                         onClick={() => setFormData(prev => ({ ...prev, thumbnail: img.url }))}
                         className={`relative aspect-square rounded-xl overflow-hidden cursor-pointer border-2 transition-all group ${formData.thumbnail === img.url ? 'border-brand-600 shadow-md ring-2 ring-brand-500/10' : 'border-white shadow-sm'}`}
                       >
-                        <img 
+                        <Image 
                           src={img.url} 
                           alt={img.title} 
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560393464-5c69a73c5770?auto=format&fit=crop&w=200&q=80";
-                          }}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105" 
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2 text-center">
                            <p className="text-[8px] font-black text-white uppercase tracking-wider">{img.title}</p>

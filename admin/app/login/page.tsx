@@ -32,8 +32,14 @@ export default function AdminLogin() {
       localStorage.setItem("technova_admin_user", JSON.stringify(response.data));
       
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || "Invalid credentials");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message || "Invalid credentials");
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Invalid credentials");
+      }
     } finally {
       setIsLoading(false);
     }

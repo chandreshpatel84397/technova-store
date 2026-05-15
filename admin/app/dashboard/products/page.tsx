@@ -1,55 +1,70 @@
 "use client";
 
-import AdminSidebar from "@/components/layout/AdminSidebar";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, Filter, MoreVertical, Edit2, Trash2, Loader2, Package, Tag, AlertCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { adminService } from "@/services/adminService";
 import AddProductModal from "@/components/dashboard/AddProductModal";
+import Image from "next/image";
 
+interface Product {
+  _id: string;
+  title: string;
+  slug: string;
+  thumbnail: string;
+  category: string;
+  brand: string;
+  price: number;
+  discount: number;
+  stock: number;
+  badge?: string;
+}
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [pagination, setPagination] = useState({ page: 1, pages: 1 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [productToEdit, setProductToEdit] = useState<any>(null);
+  const [productToEdit, setProductToEdit] = useState<Product | null>(null);
 
-
-  useEffect(() => {
-    fetchProducts(1);
-  }, []);
-
-  const fetchProducts = async (page: number) => {
+  const fetchProducts = useCallback(async (page: number = 1) => {
     try {
       setIsLoading(true);
-      const data = await adminService.getProducts();
-      // Back end returns {products, page, pages}
+      const data = await adminService.getProducts(page);
       setProducts(data.products);
       setPagination({ page: data.page, pages: data.pages });
       setError(null);
-    } catch (err: any) {
-      setError(err.message || "Failed to load products");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Failed to load products");
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchProducts(1);
+  }, [fetchProducts]);
 
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         await adminService.deleteProduct(id);
         fetchProducts(pagination.page);
-      } catch (err: any) {
-        alert(err.message || "Failed to delete product");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to delete product";
+        alert(message);
       }
     }
   };
 
-  const handleEdit = (product: any) => {
+  const handleEdit = (product: Product) => {
     setProductToEdit(product);
     setIsAddModalOpen(true);
   };
@@ -143,14 +158,12 @@ export default function ProductsPage() {
                         >
                           <td className="px-8 py-5">
                             <div className="flex items-center gap-5">
-                              <div className="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-100 group-hover:border-brand-200 transition-colors">
-                                <img 
+                              <div className="relative w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-100 group-hover:border-brand-200 transition-colors">
+                                <Image 
                                   src={product.thumbnail} 
                                   alt={product.title} 
-                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                                  onError={(e) => {
-                                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560393464-5c69a73c5770?auto=format&fit=crop&w=400&q=80";
-                                  }}
+                                  fill
+                                  className="object-cover group-hover:scale-110 transition-transform duration-500" 
                                 />
                               </div>
                               <div>

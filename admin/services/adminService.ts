@@ -11,6 +11,12 @@ export const adminService = {
     return response.data;
   },
 
+  // Products
+  async getProducts(pageNumber: number = 1) {
+    const response = await axiosInstance.get(`/api/products?pageNumber=${pageNumber}`);
+    return response.data; // Note: backend returns {products, page, pages}
+  },
+
   // Users
   async getUsers() {
     const response = await axiosInstance.get("/api/users");
