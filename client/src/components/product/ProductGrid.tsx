@@ -163,10 +163,9 @@ export const ProductGrid = () => {
           <Button
             variant="ghost"
             onClick={loadMore}
-            disabled={isLoading}
+            isLoading={isLoading}
             className="group"
           >
-            {isLoading ? <FiLoader className="animate-spin mr-2" /> : null}
             {isLoading ? "Loading products..." : "Load more products"}
           </Button>
         </div>
