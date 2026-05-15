@@ -3,7 +3,11 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { FiSearch, FiLoader } from "react-icons/fi";
 import { categories, SortOption, sortOptions } from "@/constants/filters";
-import { fetchProducts, selectProducts, resetProducts } from "@/redux/features/productSlice";
+import {
+  fetchProducts,
+  selectProducts,
+  resetProducts,
+} from "@/redux/features/productSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchParams } from "next/navigation";
@@ -22,23 +26,30 @@ import { Button } from "@/components/ui/Button";
 export const ProductGrid = () => {
   const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
-  const { error, isLoading, items, page, pages } = useAppSelector(selectProducts);
-  
+  const { error, isLoading, items, page, pages } =
+    useAppSelector(selectProducts);
+
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState(searchParams.get("category") || "All");
+  const [category, setCategory] = useState(
+    searchParams.get("category") || "All",
+  );
   const [sortBy, setSortBy] = useState<SortOption>("featured");
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-  
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
+  );
+
   const debouncedQuery = useDebounce(query);
 
   // Initial fetch or fetch on filter change
   const loadInitialProducts = useCallback(() => {
     dispatch(resetProducts());
-    dispatch(fetchProducts({ 
-      keyword: debouncedQuery, 
-      category: category === "All" ? "" : category,
-      pageNumber: 1
-    }));
+    dispatch(
+      fetchProducts({
+        keyword: debouncedQuery,
+        category: category === "All" ? "" : category,
+        pageNumber: 1,
+      }),
+    );
   }, [dispatch, debouncedQuery, category]);
 
   useEffect(() => {
@@ -47,11 +58,13 @@ export const ProductGrid = () => {
 
   const loadMore = () => {
     if (page < pages && !isLoading) {
-      dispatch(fetchProducts({ 
-        keyword: debouncedQuery, 
-        category: category === "All" ? "" : category,
-        pageNumber: page + 1
-      }));
+      dispatch(
+        fetchProducts({
+          keyword: debouncedQuery,
+          category: category === "All" ? "" : category,
+          pageNumber: page + 1,
+        }),
+      );
     }
   };
 
@@ -122,11 +135,11 @@ export const ProductGrid = () => {
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         />
       ) : null}
-      
+
       {error ? (
         <EmptyState title="Products unavailable" message={error} />
       ) : null}
-      
+
       {!isLoading && !filteredProducts.length ? (
         <EmptyState
           title="No products found"
@@ -147,15 +160,13 @@ export const ProductGrid = () => {
 
       {page < pages && (
         <div className="flex justify-center pt-8">
-          <Button 
-            variant="ghost" 
-            onClick={loadMore} 
+          <Button
+            variant="ghost"
+            onClick={loadMore}
             disabled={isLoading}
             className="group"
           >
-            {isLoading ? (
-              <FiLoader className="animate-spin mr-2" />
-            ) : null}
+            {isLoading ? <FiLoader className="animate-spin mr-2" /> : null}
             {isLoading ? "Loading products..." : "Load more products"}
           </Button>
         </div>
@@ -163,7 +174,7 @@ export const ProductGrid = () => {
 
       {page === pages && items.length > 0 && (
         <p className="text-center text-sm font-semibold text-slate-400 py-8">
-          You've reached the end of our current catalog.
+          You&apos;ve reached the end of our current catalog.
         </p>
       )}
 
