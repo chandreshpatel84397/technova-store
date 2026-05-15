@@ -21,11 +21,11 @@ const steps = [
   { label: "Delivered", icon: FiCheckCircle },
 ];
 
-export const OrderCard = ({ order }: { order: any }) => {
-  const orderId = order._id || order.id;
-  const orderDate = order.createdAt || order.date;
-  const totalPrice = order.totalPrice !== undefined ? order.totalPrice : order.total;
-  const currentStatus = order.orderStatus || order.status || "pending";
+export const OrderCard = ({ order }: { order: Order }) => {
+  const orderId = order._id;
+  const orderDate = order.createdAt;
+  const totalPrice = order.totalPrice;
+  const currentStatus = order.orderStatus;
   const activeIndex = getStatusIndex(currentStatus);
 
   return (
@@ -50,8 +50,8 @@ export const OrderCard = ({ order }: { order: any }) => {
       </div>
 
       <div className="grid gap-6 p-6">
-        {order.items?.map((item: any, index: number) => (
-          <div className="grid grid-cols-[80px_1fr_auto] items-center gap-4" key={item._id || item.productId || index}>
+        {order.items?.map((item, index: number) => (
+          <div className="grid grid-cols-[80px_1fr_auto] items-center gap-4" key={typeof item.product === 'string' ? item.product : item.product._id}>
             <div className="relative h-20 w-20 overflow-hidden rounded-2xl bg-slate-100 border border-slate-50 dark:border-slate-800">
               <Image alt={item.title} fill className="object-cover" src={item.thumbnail} />
             </div>

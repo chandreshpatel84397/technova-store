@@ -8,7 +8,7 @@ import { FiEye, FiHeart, FiShoppingCart, FiStar, FiImage } from "react-icons/fi"
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/common/ToastProvider";
 import { addToCart } from "@/redux/features/cartSlice";
-import { toggleWishlist } from "@/redux/features/wishlistSlice";
+import { toggleWishlistLocal } from "@/redux/features/wishlistSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Product } from "@/types";
 import { currency } from "@/utils/formatters";
@@ -54,8 +54,8 @@ export const ProductCard = ({
   const [imgError, setImgError] = useState(false);
   
   const wishlist = useAppSelector((state) => state.wishlist.items);
-  const currentProductId = product._id || product.id;
-  const isWishlisted = wishlist.some((item) => (item._id || item.id) === currentProductId);
+  const currentProductId = product._id;
+  const isWishlisted = wishlist.some((item) => item._id === currentProductId);
   const reduceMotion = useReducedMotion();
 
   const addProduct = () => {
@@ -64,7 +64,7 @@ export const ProductCard = ({
   };
 
   const toggleFavorite = () => {
-    dispatch(toggleWishlist(product));
+    dispatch(toggleWishlistLocal(product));
     showToast(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
   };
   

@@ -33,7 +33,7 @@ export const FlashSale = () => {
         </div>
         <MotionGrid className="grid gap-5 md:grid-cols-3">
           {saleProducts.map((product) => (
-            <MotionGridItem key={product.id}>
+            <MotionGridItem key={product._id}>
               <Link
                 className="block rounded-2xl border border-white/15 bg-gradient-to-br from-white/20 to-white/10 p-6 backdrop-blur-md overflow-hidden transition duration-300 hover:-translate-y-1 hover:from-white/25 hover:to-white/15 hover:border-white/25"
                 href={`/products/${product.slug}`}

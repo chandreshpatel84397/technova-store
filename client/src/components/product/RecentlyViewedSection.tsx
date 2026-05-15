@@ -20,7 +20,7 @@ export const RecentlyViewedSection = ({
 
   useEffect(() => {
     setProducts(
-      getRecentlyViewed().filter((product) => product.id !== currentProductId),
+      getRecentlyViewed().filter((product) => product._id !== currentProductId),
     );
   }, [currentProductId, getRecentlyViewed]);
 
@@ -37,7 +37,7 @@ export const RecentlyViewedSection = ({
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {products.map((product, index) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             onQuickView={setQuickViewProduct}
             product={product}
             staggerIndex={index}

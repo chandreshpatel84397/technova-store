@@ -1,43 +1,53 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { STORAGE_KEYS } from "@/constants/storage";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "@/types";
-import { readStorage, writeStorage } from "@/utils/storage";
+import { userService } from "@/services/userService";
 
 interface WishlistState {
   items: Product[];
+  isLoading: boolean;
 }
 
 const initialState: WishlistState = {
-  items: []
+  items: [],
+  isLoading: false
 };
 
-const syncWishlist = (items: Product[]) => writeStorage(STORAGE_KEYS.wishlist, items);
+export const fetchWishlist = createAsyncThunk("wishlist/fetch", async () => {
+  return userService.getWishlist();
+});
+
+export const toggleWishlistBackend = createAsyncThunk("wishlist/toggle", async (productId: string) => {
+  // This logic depends on backend implementation, usually a toggle endpoint
+  // For now, we'll assume the backend handles the state.
+  return userService.updateWishlist([productId]); // Adjust based on actual API
+});
 
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
-    toggleWishlist: (state, action: PayloadAction<Product>) => {
-      const productId = action.payload._id || action.payload.id;
-      const exists = state.items.some((product) => (product._id || product.id) === productId);
+    toggleWishlistLocal: (state, action: PayloadAction<Product>) => {
+      const productId = action.payload._id;
+      const exists = state.items.some((product) => product._id === productId);
       
       if (exists) {
-        state.items = state.items.filter((product) => (product._id || product.id) !== productId);
+        state.items = state.items.filter((product) => product._id !== productId);
       } else {
         state.items.push(action.payload);
       }
-      syncWishlist(state.items);
     },
     clearWishlist: (state) => {
       state.items = [];
-      syncWishlist(state.items);
-    },
-    hydrateWishlist: (state) => {
-      state.items = readStorage<Product[]>(STORAGE_KEYS.wishlist, []).filter((product) => product.title && product.thumbnail);
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchWishlist.fulfilled, (state, action) => {
+        state.items = action.payload;
+      });
   }
 });
 
-export const { clearWishlist, hydrateWishlist, toggleWishlist } = wishlistSlice.actions;
+export const { clearWishlist, toggleWishlistLocal } = wishlistSlice.actions;
 export const selectWishlistItems = (state: { wishlist: WishlistState }) => state.wishlist.items;
 export default wishlistSlice.reducer;

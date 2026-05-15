@@ -6,9 +6,10 @@ import { FiArrowRight, FiLogOut, FiPackage, FiUser } from "react-icons/fi";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import { Button } from "@/components/ui/Button";
 import { logout } from "@/redux/features/authSlice";
-import { selectOrdersByEmail } from "@/redux/features/orderSlice";
+import { selectOrders } from "@/redux/features/orderSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { currency } from "@/utils/formatters";
+import { Order } from "@/types";
 import {
   MotionSection,
   MotionText,
@@ -20,9 +21,9 @@ export default function ProfilePage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
-  const orders = useAppSelector(selectOrdersByEmail(user?.email));
+  const orders = useAppSelector(selectOrders);
   const recentOrders = [...orders]
-    .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
     .slice(0, 3);
 
   return (
@@ -95,33 +96,33 @@ export default function ProfilePage() {
           ) : (
             <MotionGrid className="mt-6 grid gap-4" delay={0.25}>
               {recentOrders.map((order) => (
-                <MotionGridItem key={order.id}>
+                <MotionGridItem key={order._id}>
                   <div className="grid grid-cols-[1fr_auto] items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40">
                     <div>
                       <p className="text-xs font-black uppercase text-brand-600">
-                        {order.id}
+                        {order._id}
                       </p>
                       <p className="mt-1 font-black">
                         {order.items.length} item
                         {order.items.length !== 1 ? "s" : ""}
                         <span className="ml-2 text-sm font-semibold text-slate-500">
-                          · {new Date(order.date).toLocaleDateString()}
+                          · {new Date(order.createdAt).toLocaleDateString()}
                         </span>
                       </p>
                       <span
-                        className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-black ${
-                          order.status === "Delivered"
+                        className={`mt-2 inline-block rounded-full px-3 py-0.5 text-xs font-black capitalize ${
+                          order.orderStatus === "delivered"
                             ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
-                            : order.status === "Confirmed"
+                            : order.orderStatus === "processing"
                               ? "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300"
                               : "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300"
                         }`}
                       >
-                        {order.status}
+                        {order.orderStatus}
                       </span>
                     </div>
                     <p className="text-xl font-black">
-                      {currency(order.total || (order as any).totalPrice)}
+                      {currency(order.totalPrice)}
                     </p>
                   </div>
                 </MotionGridItem>

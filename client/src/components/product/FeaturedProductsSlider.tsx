@@ -52,7 +52,7 @@ export const FeaturedProductsSlider = () => {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {activeProducts.map((product, index) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             onQuickView={setQuickViewProduct}
             product={product}
             staggerIndex={index}

@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/common/EmptyState";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import { OrderCard } from "@/components/order/OrderCard";
 import { Button } from "@/components/ui/Button";
-import { selectOrdersByEmail, fetchMyOrders } from "@/redux/features/orderSlice";
+import { selectOrders, fetchMyOrders } from "@/redux/features/orderSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   MotionSection,
@@ -19,7 +19,7 @@ import {
 export default function OrdersPage() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const orders = useAppSelector(selectOrdersByEmail(user?.email));
+  const orders = useAppSelector(selectOrders);
   const [successOrderId, setSuccessOrderId] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   
@@ -34,8 +34,8 @@ export default function OrdersPage() {
 
   const sortedOrders = useMemo(
     () => [...orders].sort((a, b) => {
-      const dateB = b.createdAt || b.date;
-      const dateA = a.createdAt || a.date;
+      const dateB = b.createdAt;
+      const dateA = a.createdAt;
       return Date.parse(dateB) - Date.parse(dateA);
     }),
     [orders],
@@ -90,7 +90,7 @@ export default function OrdersPage() {
         ) : (
           <MotionGrid className="grid gap-6" delay={0.15}>
             {sortedOrders.map((order) => (
-              <MotionGridItem key={order._id || order.id}>
+              <MotionGridItem key={order._id}>
                 <OrderCard order={order} />
               </MotionGridItem>
             ))}

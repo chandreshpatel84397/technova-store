@@ -15,6 +15,7 @@ import {
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { currency } from "@/utils/formatters";
+import { CartItem } from "@/types";
 import {
   MotionSection,
   MotionText,
@@ -32,7 +33,7 @@ export default function CartPage() {
     couponCode.trim().toUpperCase() === "NOVA10" ? Math.round(total * 0.1) : 0;
   const finalTotal = Math.max(total - couponSavings, 0);
 
-  const getItemId = (item: any) => item.product._id || item.product.id;
+  const getItemId = (item: CartItem) => item.product._id;
 
   return (
     <ProtectedRoute>

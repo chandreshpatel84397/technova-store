@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FiArrowRight, FiPackage } from "react-icons/fi";
-import { fetchMyOrders, selectOrdersByEmail } from "@/redux/features/orderSlice";
+import { fetchMyOrders, selectOrders } from "@/redux/features/orderSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { currency } from "@/utils/formatters";
+import { Order } from "@/types";
 
 export const RecentOrdersBanner = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +14,7 @@ export const RecentOrdersBanner = () => {
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isHydrated = useAppSelector((state) => state.auth.isHydrated);
-  const orders = useAppSelector(selectOrdersByEmail(user?.email));
+  const orders = useAppSelector(selectOrders);
 
   useEffect(() => {
     setMounted(true);
@@ -26,7 +27,7 @@ export const RecentOrdersBanner = () => {
   if (!mounted || !isHydrated || !isAuthenticated || !orders || orders.length === 0) return null;
 
   const recentOrders = [...orders]
-    .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
     .slice(0, 3);
 
   return (
@@ -52,28 +53,28 @@ export const RecentOrdersBanner = () => {
           {recentOrders.map((order) => (
             <div
               className="rounded-2xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-950/40"
-              key={(order as any)._id || order.id}
+              key={order._id}
             >
               <div className="flex items-start justify-between gap-2">
                 <p className="text-[10px] font-black uppercase text-brand-600 truncate max-w-[120px]">
-                  #{(order as any)._id?.slice(-8) || order.id?.slice(-8)}
+                  #{order._id.slice(-8)}
                 </p>
                 <span
-                  className={`rounded-full px-2.5 py-0.5 text-xs font-black ${
-                    order.status === "Delivered"
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-black capitalize ${
+                    order.orderStatus === "delivered"
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300"
-                      : order.status === "Confirmed"
+                      : order.orderStatus === "processing"
                       ? "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300"
                       : "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300"
                   }`}
                 >
-                  {order.status}
+                  {order.orderStatus}
                 </span>
               </div>
-              <p className="mt-2 text-lg font-black">{currency(order.total || (order as any).totalPrice)}</p>
+              <p className="mt-2 text-lg font-black">{currency(order.totalPrice)}</p>
               <p className="mt-1 text-sm text-slate-500">
                 {order.items.length} item{order.items.length !== 1 ? "s" : ""} ·{" "}
-                {new Date((order as any).createdAt || order.date).toLocaleDateString()}
+                {new Date(order.createdAt).toLocaleDateString()}
               </p>
             </div>
           ))}

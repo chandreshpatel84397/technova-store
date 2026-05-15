@@ -16,6 +16,7 @@ import {
   MotionSection,
   MotionText,
 } from "@/components/animations/MotionReveal";
+import { Product } from "@/types";
 
 export const generateStaticParams = () =>
   products.map((product) => ({ id: product.slug }));
@@ -62,7 +63,7 @@ export default async function ProductDetailsPage({
       const relatedRes = await fetch(`${baseUrl}/api/products?category=${product?.category}&pageSize=5`, { next: { revalidate: 60 } });
       if (relatedRes.ok) {
         const relatedData = await relatedRes.json();
-        relatedProducts = relatedData.products.filter((p: any) => (p._id || p.id) !== (product?._id || product?.id)).slice(0, 4);
+        relatedProducts = relatedData.products.filter((p: any) => p._id !== product?._id).slice(0, 4);
       }
     }
   } catch (error) {
@@ -74,7 +75,7 @@ export default async function ProductDetailsPage({
     product = getProductBySlug(slug) || null;
     if (product) {
       relatedProducts = products
-        .filter((item) => item.category === product?.category && item.id !== product?.id)
+        .filter((item) => item.category === product?.category && item._id !== product?._id)
         .slice(0, 4);
     }
   }
@@ -82,12 +83,11 @@ export default async function ProductDetailsPage({
   if (!product) notFound();
   
   const originalPrice = getOriginalPrice(product.price, product.discount);
-  const productId = product.id || product._id;
+  const productId = product._id;
   
   // Normalize product for client components
   const normalizedProduct = {
     ...product,
-    id: productId,
     features: product.features || [],
     images: product.images || [product.thumbnail]
   };

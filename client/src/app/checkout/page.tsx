@@ -36,7 +36,7 @@ export default function CheckoutPage() {
   const [mounted, setMounted] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [paymentMethod, setPaymentMethod] =
-    useState<Order["paymentMethod"]>("Card");
+    useState<string>("Card");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export default function CheckoutPage() {
     
     const orderData = {
       items: items.map(item => ({
-        product: item.product._id || item.product.id,
+        product: item.product._id,
         title: item.product.title,
         quantity: item.quantity,
         price: item.product.price,
@@ -142,13 +142,11 @@ export default function CheckoutPage() {
                     Payment method
                   </p>
                   <div className="grid gap-3 md:grid-cols-3">
-                    {(
-                      [
+                    {[
                         "Card",
                         "UPI",
                         "Cash on Delivery",
-                      ] as Order["paymentMethod"][]
-                    ).map((method) => (
+                    ].map((method) => (
                       <button
                         key={method}
                         className={`rounded-2xl border px-4 py-3 text-left text-sm font-black transition-all ${
@@ -194,7 +192,7 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-black">Checkout summary</h2>
               <MotionGrid className="mt-5 grid gap-4" delay={0.15}>
                 {items.map((item) => (
-                  <MotionGridItem key={item.product._id || item.product.id}>
+                  <MotionGridItem key={item.product._id}>
                     <div className="grid grid-cols-[56px_1fr_auto] items-center gap-3">
                       <div className="relative h-14 overflow-hidden rounded-xl bg-slate-100">
                         <Image

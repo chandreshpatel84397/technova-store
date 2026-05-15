@@ -4,7 +4,7 @@ const img = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=c
 
 export const products: Product[] = [
   {
-    id: "p-1001",
+    _id: "p-1001",
     title: "TechNova NovaBook Pro 14",
     slug: "technova-novabook-pro-14",
     description: "A lightweight creator laptop with a bright 14 inch display, fast storage, and all-day battery life.",
@@ -22,7 +22,7 @@ export const products: Product[] = [
     badge: "Best Seller"
   },
   {
-    id: "p-1002",
+    _id: "p-1002",
     title: "Auralux AuraPods Max",
     slug: "auralux-aurapods-max",
     description: "Premium over-ear headphones with adaptive noise cancellation and spatial audio tuning.",
@@ -40,7 +40,7 @@ export const products: Product[] = [
     badge: "Flash Sale"
   },
   {
-    id: "p-1003",
+    _id: "p-1003",
     title: "PulseFit X2 Smart Watch",
     slug: "pulsefit-x2-smart-watch",
     description: "A health-focused smart watch with GPS, sleep tracking, and a polished AMOLED display.",
@@ -58,7 +58,7 @@ export const products: Product[] = [
     badge: "New"
   },
   {
-    id: "p-1004",
+    _id: "p-1004",
     title: "KeyCraft Low Profile Keyboard",
     slug: "keycraft-low-profile-keyboard",
     description: "A quiet mechanical keyboard with hot-swappable switches, Bluetooth, and a premium aluminum frame.",
@@ -76,7 +76,7 @@ export const products: Product[] = [
     badge: "Top Rated"
   },
   {
-    id: "p-1005",
+    _id: "p-1005",
     title: "ArcStrike Pro Gaming Mouse",
     slug: "arcstrike-pro-gaming-mouse",
     description: "An ultralight wireless gaming mouse with a high-precision sensor and low-latency clicks.",
@@ -94,7 +94,7 @@ export const products: Product[] = [
     badge: "Hot Deal"
   },
   {
-    id: "p-1006",
+    _id: "p-1006",
     title: "ViewEdge 27 4K Monitor",
     slug: "viewedge-27-4k-monitor",
     description: "A color-accurate 27 inch 4K monitor for design, coding, trading, and everyday productivity.",
@@ -112,7 +112,7 @@ export const products: Product[] = [
     badge: "Featured"
   },
   {
-    id: "p-1007",
+    _id: "p-1007",
     title: "SonicPod Studio Speaker",
     slug: "sonicpod-studio-speaker",
     description: "A compact desktop speaker with rich stereo imaging and clean voice clarity for calls.",
@@ -129,7 +129,7 @@ export const products: Product[] = [
     tags: ["speaker", "audio", "desktop"]
   },
   {
-    id: "p-1008",
+    _id: "p-1008",
     title: "NovaHub 8-in-1 USB-C Dock",
     slug: "novahub-8-in-1-usb-c-dock",
     description: "A compact aluminum USB-C hub with HDMI, power delivery, card readers, and ethernet.",
@@ -146,7 +146,7 @@ export const products: Product[] = [
     tags: ["accessory", "work", "mobile"]
   },
   {
-    id: "p-1009",
+    _id: "p-1009",
     title: "VisionCam Studio 4K",
     slug: "visioncam-studio-4k",
     description: "A sharp 4K webcam with smart framing, low-light correction, and crisp dual microphones.",
@@ -163,7 +163,7 @@ export const products: Product[] = [
     tags: ["camera", "creator", "sale"]
   },
   {
-    id: "p-1010",
+    _id: "p-1010",
     title: "Tabula Air 11 Tablet",
     slug: "tabula-air-11-tablet",
     description: "A slim tablet for notes, streaming, sketching, and mobile productivity.",
@@ -180,7 +180,7 @@ export const products: Product[] = [
     tags: ["tablet", "portable", "featured"]
   },
   {
-    id: "p-1011",
+    _id: "p-1011",
     title: "TechNova NovaBook Air 13",
     slug: "technova-novabook-air-13",
     description: "An everyday laptop with a thin chassis, quiet keyboard, and excellent battery life.",
@@ -197,7 +197,7 @@ export const products: Product[] = [
     tags: ["laptop", "student", "work"]
   },
   {
-    id: "p-1012",
+    _id: "p-1012",
     title: "Auralux Buds Neo",
     slug: "auralux-buds-neo",
     description: "Pocket-friendly wireless earbuds with noise reduction and punchy everyday sound.",
@@ -215,7 +215,7 @@ export const products: Product[] = [
     badge: "Popular"
   },
   {
-    id: "p-1013",
+    _id: "p-1013",
     title: "PulseFit Mini Smart Watch",
     slug: "pulsefit-mini-smart-watch",
     description: "A compact smart watch for notifications, workouts, sleep, and everyday health tracking.",
@@ -232,7 +232,7 @@ export const products: Product[] = [
     tags: ["watch", "fitness", "gift"]
   },
   {
-    id: "p-1014",
+    _id: "p-1014",
     title: "KeyCraft Pro TKL Keyboard",
     slug: "keycraft-pro-tkl-keyboard",
     description: "A tenkeyless mechanical keyboard with gasket mount feel and customizable RGB.",
@@ -249,7 +249,7 @@ export const products: Product[] = [
     tags: ["keyboard", "gaming", "trending"]
   },
   {
-    id: "p-1015",
+    _id: "p-1015",
     title: "ArcStrike Mini Gaming Mouse",
     slug: "arcstrike-mini-gaming-mouse",
     description: "A compact performance mouse for claw grip players and portable setups.",
@@ -266,7 +266,7 @@ export const products: Product[] = [
     tags: ["gaming", "mouse", "compact"]
   },
   {
-    id: "p-1016",
+    _id: "p-1016",
     title: "ViewEdge UltraWide 34",
     slug: "viewedge-ultrawide-34",
     description: "A 34 inch ultrawide monitor designed for immersive multitasking and cinematic gaming.",
@@ -284,7 +284,7 @@ export const products: Product[] = [
     badge: "Creator Pick"
   },
   {
-    id: "p-1017",
+    _id: "p-1017",
     title: "SonicPod Beam Soundbar",
     slug: "sonicpod-beam-soundbar",
     description: "A slim soundbar for desks and bedrooms with virtual surround and clear dialogue mode.",
@@ -301,7 +301,7 @@ export const products: Product[] = [
     tags: ["speaker", "soundbar", "home"]
   },
   {
-    id: "p-1018",
+    _id: "p-1018",
     title: "VoltCase Mag Battery Pack",
     slug: "voltcase-mag-battery-pack",
     description: "A magnetic wireless battery pack that keeps your phone topped up without messy cables.",
@@ -318,7 +318,7 @@ export const products: Product[] = [
     tags: ["charger", "mobile", "travel"]
   },
   {
-    id: "p-1019",
+    _id: "p-1019",
     title: "VisionShot Mirrorless M10",
     slug: "visionshot-mirrorless-m10",
     description: "A compact mirrorless camera for creators who want crisp video and detailed stills.",
@@ -335,7 +335,7 @@ export const products: Product[] = [
     tags: ["camera", "creator", "premium"]
   },
   {
-    id: "p-1020",
+    _id: "p-1020",
     title: "Tabula Pro 12.9 Tablet",
     slug: "tabula-pro-12-9-tablet",
     description: "A large-screen tablet made for sketching, editing, multitasking, and entertainment.",
@@ -352,7 +352,7 @@ export const products: Product[] = [
     tags: ["tablet", "pro", "trending"]
   },
   {
-    id: "p-1021",
+    _id: "p-1021",
     title: "TechNova WorkDock Monitor Arm",
     slug: "technova-workdock-monitor-arm",
     description: "A premium monitor arm with smooth movement and cable routing for cleaner desks.",
@@ -369,7 +369,7 @@ export const products: Product[] = [
     tags: ["monitor", "desk", "accessory"]
   },
   {
-    id: "p-1022",
+    _id: "p-1022",
     title: "Auralux Studio Mic",
     slug: "auralux-studio-mic",
     description: "A USB microphone for streamers, meetings, podcasts, and clean voice recording.",
@@ -386,7 +386,7 @@ export const products: Product[] = [
     tags: ["audio", "creator", "microphone"]
   },
   {
-    id: "p-1023",
+    _id: "p-1023",
     title: "VoltCase 3-in-1 Charging Stand",
     slug: "voltcase-3-in-1-charging-stand",
     description: "A tidy charging station for phone, earbuds, and watch with a compact bedside footprint.",
@@ -404,7 +404,7 @@ export const products: Product[] = [
     badge: "Deal"
   },
   {
-    id: "p-1024",
+    _id: "p-1024",
     title: "VisionShot Action Cam X",
     slug: "visionshot-action-cam-x",
     description: "A rugged action camera with smooth stabilization and waterproof travel-ready design.",
@@ -422,4 +422,4 @@ export const products: Product[] = [
   }
 ];
 
-export const getProductBySlug = (slug: string) => products.find((product) => product.slug === slug || product.id === slug);
+export const getProductBySlug = (slug: string) => products.find((product) => product.slug === slug || product._id === slug);

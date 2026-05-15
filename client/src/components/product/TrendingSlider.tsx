@@ -47,7 +47,7 @@ export const TrendingSlider = () => {
       <div className="grid gap-6 md:grid-cols-3">
         {activeProducts.map((product, index) => (
           <ProductCard
-            key={product.id}
+            key={product._id}
             onQuickView={setQuickViewProduct}
             product={product}
             staggerIndex={index}

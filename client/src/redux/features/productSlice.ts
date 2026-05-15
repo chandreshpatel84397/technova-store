@@ -44,8 +44,8 @@ const productSlice = createSlice({
           state.items = action.payload.products;
         } else {
           // Append only if not already present
-          const existingIds = new Set(state.items.map(i => i._id || i.id));
-          const newItems = action.payload.products.filter((i: any) => !existingIds.has(i._id || i.id));
+          const existingIds = new Set(state.items.map(i => i._id));
+          const newItems = action.payload.products.filter((i: Product) => !existingIds.has(i._id));
           state.items = [...state.items, ...newItems];
         }
         state.pages = action.payload.pages;

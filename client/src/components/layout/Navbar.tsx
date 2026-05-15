@@ -17,7 +17,7 @@ import {
 import { publicNavItems, ROUTES } from "@/constants/routes";
 import { logout } from "@/redux/features/authSlice";
 import { selectCartCount } from "@/redux/features/cartSlice";
-import { selectOrdersByEmail } from "@/redux/features/orderSlice";
+import { selectOrders } from "@/redux/features/orderSlice";
 import { selectTheme, toggleTheme } from "@/redux/features/themeSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Button } from "@/components/ui/Button";
@@ -33,7 +33,7 @@ export const Navbar = () => {
   const wishlistCount = wishlistItems.length;
   const mode = useAppSelector(selectTheme);
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  const orders = useAppSelector(selectOrdersByEmail(user?.email));
+  const orders = useAppSelector(selectOrders);
   const orderCount = orders.length;
   const [mounted, setMounted] = useState(false);
 

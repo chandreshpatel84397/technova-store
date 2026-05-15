@@ -12,7 +12,7 @@ export const useRecentlyViewed = () => {
   );
 
   const addRecentlyViewed = useCallback((product: Product) => {
-    const next = [product, ...getRecentlyViewed().filter((item) => item.id !== product.id)].slice(0, 4);
+    const next = [product, ...getRecentlyViewed().filter((item) => item._id !== product._id)].slice(0, 4);
     writeStorage(STORAGE_KEYS.recentlyViewed, next);
   }, [getRecentlyViewed]);
 

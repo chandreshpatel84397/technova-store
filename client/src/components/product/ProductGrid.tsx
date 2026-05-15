@@ -97,7 +97,7 @@ export const ProductGrid = () => {
                 {suggestions.map((product) => (
                   <button
                     className="block w-full rounded-xl px-3 py-2 text-left text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-800"
-                    key={product._id || product.id}
+                    key={product._id}
                     onClick={() => setQuery(product.title)}
                   >
                     {product.title}
@@ -150,7 +150,7 @@ export const ProductGrid = () => {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProducts.map((product, index) => (
           <ProductCard
-            key={product._id || product.id}
+            key={product._id}
             onQuickView={setQuickViewProduct}
             product={product}
             staggerIndex={index % 6}

@@ -14,23 +14,7 @@ export const adminService = {
   // Products
   async getProducts(pageNumber: number = 1) {
     const response = await axiosInstance.get(`/api/products?pageNumber=${pageNumber}`);
-    return response.data; // Note: backend returns {products, page, pages}
-  },
-
-  // Users
-  async getUsers() {
-    const response = await axiosInstance.get("/api/users");
-    return response.data;
-  },
-  async blockUser(id: string) {
-    const response = await axiosInstance.put(`/api/users/${id}/block`);
-    return response.data;
-  },
-
-  // Products
-  async getProducts() {
-    const response = await axiosInstance.get("/api/products");
-    return response.data; // Note: backend returns {products, page, pages}
+    return response.data; // Returns {products, page, pages}
   },
   async createProduct(productData: any) {
     const response = await axiosInstance.post("/api/products", productData);
@@ -42,6 +26,16 @@ export const adminService = {
   },
   async deleteProduct(id: string) {
     const response = await axiosInstance.delete(`/api/products/${id}`);
+    return response.data;
+  },
+
+  // Users
+  async getUsers() {
+    const response = await axiosInstance.get("/api/users");
+    return response.data;
+  },
+  async blockUser(id: string) {
+    const response = await axiosInstance.put(`/api/users/${id}/block`);
     return response.data;
   },
 
