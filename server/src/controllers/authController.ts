@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import User from '../models/User';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import { Request, Response } from "express";
+import User from "../models/User";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const generateToken = (id: string) => {
-  return jwt.sign({ id }, 'technova_2024', {
-    expiresIn: '30d',
+  return jwt.sign({ id }, "technova_2024", {
+    expiresIn: "30d",
   });
 };
 
@@ -15,7 +15,7 @@ export const registerUser = async (req: Request, res: Response) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({ message: "User already exists" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,7 +35,7 @@ export const registerUser = async (req: Request, res: Response) => {
       token: generateToken(user._id.toString()),
     });
   } else {
-    res.status(400).json({ message: 'Invalid user data' });
+    res.status(400).json({ message: "Invalid user data" });
   }
 };
 
@@ -54,7 +54,7 @@ export const loginUser = async (req: Request, res: Response) => {
       token: generateToken(user._id.toString()),
     });
   } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+    res.status(401).json({ message: "Invalid email or password" });
   }
 };
 
@@ -71,7 +71,7 @@ export const getUserProfile = async (req: any, res: Response) => {
       addresses: user.addresses,
     });
   } else {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: "User not found" });
   }
 };
 
@@ -97,6 +97,6 @@ export const updateUserProfile = async (req: any, res: Response) => {
       token: generateToken(updatedUser._id.toString()),
     });
   } else {
-    res.status(404).json({ message: 'User not found' });
+    res.status(404).json({ message: "User not found" });
   }
 };
