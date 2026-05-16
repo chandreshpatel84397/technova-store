@@ -5,20 +5,7 @@ import { X, Upload, Search, Package, Tag, DollarSign, List, Briefcase, Plus, Che
 import { useState, useEffect, useCallback } from "react";
 import { adminService } from "@/services/adminService";
 import Image from "next/image";
-
-interface Product {
-  _id: string;
-  title: string;
-  slug: string;
-  thumbnail: string;
-  category: string;
-  brand: string;
-  price: number;
-  discount: number;
-  stock: number;
-  description?: string;
-  badge?: string;
-}
+import { Product } from "@/types";
 
 interface AddProductModalProps {
   isOpen: boolean;

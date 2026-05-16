@@ -25,32 +25,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { adminService } from "@/services/adminService";
-
-interface RecentOrder {
-  _id: string;
-  user: {
-    name: string;
-    email: string;
-  };
-  createdAt: string;
-  orderStatus: string;
-  totalPrice: number;
-}
-
-interface DashboardStats {
-  totalRevenue: number;
-  totalUsers: number;
-  totalOrders: number;
-  totalProducts: number;
-  recentOrders: RecentOrder[];
-}
-
-interface SalesData {
-  _id: string;
-  totalSales: number;
-  count: number;
-  name?: string;
-}
+import { DashboardStats, SalesRecord as SalesData, Order } from "@/types";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -234,7 +209,7 @@ export default function AdminDashboard() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {stats && stats.recentOrders && stats.recentOrders.length > 0 ? (
-                  stats.recentOrders.map((order: RecentOrder) => (
+                  stats.recentOrders.map((order: Order) => (
                     <tr key={order._id} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-4 font-medium text-slate-900">#{order._id.slice(-6).toUpperCase()}</td>
                       <td className="px-6 py-4">

@@ -7,19 +7,7 @@ import { useEffect, useState, useCallback } from "react";
 import { adminService } from "@/services/adminService";
 import AddProductModal from "@/components/dashboard/AddProductModal";
 import Image from "next/image";
-
-interface Product {
-  _id: string;
-  title: string;
-  slug: string;
-  thumbnail: string;
-  category: string;
-  brand: string;
-  price: number;
-  discount: number;
-  stock: number;
-  badge?: string;
-}
+import { Product } from "@/types";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);

@@ -6,18 +6,7 @@ import { Search, Eye, Download, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { adminService } from "@/services/adminService";
 import OrderDetailsModal from "@/components/dashboard/OrderDetailsModal";
-
-interface Order {
-  _id: string;
-  user: {
-    name: string;
-    email: string;
-  };
-  createdAt: string;
-  totalPrice: number;
-  paymentStatus: string;
-  orderStatus: string;
-}
+import { Order } from "@/types";
 
 
 export default function OrdersPage() {

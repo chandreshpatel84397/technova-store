@@ -4,33 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Package, Truck, CreditCard, MapPin, User, Calendar, ExternalLink } from "lucide-react";
 
 import Image from "next/image";
-
-interface OrderItem {
-  title: string;
-  thumbnail: string;
-  price: number;
-  quantity: number;
-}
-
-interface Order {
-  _id: string;
-  createdAt: string;
-  items: OrderItem[];
-  totalPrice: number;
-  user?: {
-    name?: string;
-    email?: string;
-  };
-  shippingAddress?: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zipCode?: string;
-    country?: string;
-  };
-  orderStatus: string;
-  paymentStatus: string;
-}
+import { Order } from "@/types";
 
 interface OrderDetailsModalProps {
   order: Order | null;

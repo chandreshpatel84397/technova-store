@@ -6,16 +6,7 @@ import { Search, Shield, Ban, Mail, Loader2, Trash2, CheckCircle, XCircle } from
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { adminService } from "@/services/adminService";
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  status: string;
-  profileImage?: string;
-}
+import { User } from "@/types";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);

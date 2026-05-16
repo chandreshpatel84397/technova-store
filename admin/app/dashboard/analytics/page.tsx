@@ -10,21 +10,9 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { adminService } from "@/services/adminService";
+import { DashboardStats, SalesRecord } from "@/types";
 
 const COLORS = ['#0ea5e9', '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e'];
-
-interface DashboardStats {
-  totalRevenue: number;
-  totalOrders: number;
-  totalUsers: number;
-  totalProducts: number;
-}
-
-interface SalesRecord {
-  _id: string;
-  totalSales: number;
-  count: number;
-}
 
 export default function AnalyticsPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -109,7 +97,7 @@ export default function AnalyticsPage() {
         </div>
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={salesData.length > 0 ? salesData : [{_id: 'Mon', totalSales: 4000}, {_id: 'Tue', totalSales: 3000}, {_id: 'Wed', totalSales: 5000}]}>
+            <AreaChart data={salesData.length > 0 ? salesData : ([{_id: 'Mon', totalSales: 4000, count: 0}, {_id: 'Tue', totalSales: 3000, count: 0}, {_id: 'Wed', totalSales: 5000, count: 0}] as SalesRecord[])}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.1}/>
@@ -167,7 +155,7 @@ export default function AnalyticsPage() {
           <h3 className="text-lg font-bold text-slate-900 mb-8">Order Volume</h3>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={salesData.length > 0 ? salesData : [{_id: 'Jan', count: 40}, {_id: 'Feb', count: 30}, {_id: 'Mar', count: 50}]}>
+              <BarChart data={salesData.length > 0 ? salesData : ([{_id: 'Jan', count: 40, totalSales: 0}, {_id: 'Feb', count: 30, totalSales: 0}, {_id: 'Mar', count: 50, totalSales: 0}] as SalesRecord[])}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="_id" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
