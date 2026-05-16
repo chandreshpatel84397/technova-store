@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 const generateToken = (id: string) => {
-  return jwt.sign({ id }, "technova_2024", {
+  return jwt.sign({ id }, process.env.JWT_SECRET || "technova_2024", {
     expiresIn: "30d",
   });
 };

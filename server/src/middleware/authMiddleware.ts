@@ -21,7 +21,7 @@ export const protect = async (
       token = req.headers.authorization.split(" ")[1];
 
       // Hardcoded for consistency across all processes
-      const secret = "technova_2024";
+      const secret = process.env.JWT_SECRET || "technova_2024";
       const decoded: any = jwt.verify(token, secret);
 
       req.user = await User.findById(decoded.id).select("-password");
