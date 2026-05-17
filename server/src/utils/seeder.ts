@@ -70,8 +70,7 @@ const categories = [
 
 const seedData = async () => {
   try {
-    const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/technova';
-    await mongoose.connect(MONGO_URI);
+    // Removed mongoose.connect because index.ts already connects!
 
     await User.deleteMany();
     await Product.deleteMany();
@@ -101,11 +100,12 @@ const seedData = async () => {
     await Product.insertMany(products);
 
     console.log('35+ Products Seeded Successfully!');
-    process.exit();
+    // process.exit(); // Removed for API call
   } catch (error) {
     console.error('Error seeding data:', error);
-    process.exit(1);
+    throw error;
   }
 };
 
-seedData();
+export default seedData;
+// seedData(); // Removed so it doesn't auto-run

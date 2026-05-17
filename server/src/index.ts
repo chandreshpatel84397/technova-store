@@ -8,6 +8,7 @@ import productRoutes from './routes/productRoutes';
 import orderRoutes from './routes/orderRoutes';
 import userRoutes from './routes/userRoutes';
 import adminRoutes from './routes/adminRoutes';
+import seedData from './utils/seeder';
 
 dotenv.config();
 
@@ -26,6 +27,16 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+
+// TEMPORARY SEED ROUTE
+app.get('/api/seed', async (req, res) => {
+  try {
+    await seedData();
+    res.status(200).send('<h1>✅ Database successfully seeded!</h1><p>You can now go log in to your admin dashboard.</p>');
+  } catch (error: any) {
+    res.status(500).send(`<h1>❌ Seeding failed</h1><p>${error.message}</p>`);
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('TechNova API is running...');
