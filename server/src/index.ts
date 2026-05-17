@@ -73,5 +73,8 @@ mongoose
     if (err.name === 'MongooseServerSelectionError') {
       console.error('👉 Hint: Check if your IP is whitelisted in MongoDB Atlas (0.0.0.0/0 for Render)');
     }
-    process.exit(1);
+    // Add a small delay before exiting to ensure logs are flushed to Render
+    setTimeout(() => {
+      process.exit(1);
+    }, 500);
   });
