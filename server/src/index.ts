@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -10,13 +11,16 @@ import userRoutes from './routes/userRoutes';
 import adminRoutes from './routes/adminRoutes';
 import seedData from './utils/seeder';
 
+// Initialize Sentry at the very top with EXACT DSN
+Sentry.init({
+  dsn: "https://3c0396d1f385ccbbd63c92ea08120286@o4511976608890880.ingest.us.sentry.io/4511976673705984",
+  tracesSampleRate: 1.0,
+});
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-console.log(`Attempting to start server on port ${PORT}...`);
-console.log(`Environment: ${process.env.NODE_ENV}`);
 
 app.use(cors());
 app.use(express.json());
@@ -28,22 +32,25 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 
-// TEMPORARY SEED ROUTE
-app.get('/api/seed', async (req, res) => {
-  try {
-    await seedData();
-    res.status(200).send('<h1>✅ Database successfully seeded!</h1><p>You can now go log in to your admin dashboard.</p>');
-  } catch (error: any) {
-    res.status(500).send(`<h1>❌ Seeding failed</h1><p>${error.message}</p>`);
-  }
-});
-
 app.get('/', (req, res) => {
   res.send('TechNova API is running...');
 });
 
-// Error handling middleware
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+// Sentry Onboarding Verification Route
+app.get('/debug-sentry', async (req, res) => {
+  const err = new Error("My first Sentry error!");
+  Sentry.captureException(err);
+  await Sentry.flush(3000);
+  res.status(500).json({ error: "My first Sentry error!", stack: err.stack });
+});
+
+// Sentry Error Handler
+Sentry.setupExpressErrorHandler(app);
+
+// Custom Error handling middleware
+app.use(async (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  Sentry.captureException(err);
+  await Sentry.flush(3000);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
     message: err.message,
@@ -53,39 +60,14 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/technova';
 
-// Process-level error handling for better debugging on Render
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
-});
-
-console.log('Connecting to MongoDB...');
-
 mongoose
   .connect(MONGO_URI)
   .then(() => {
-    console.log('✅ Connected to MongoDB');
-    const server = app.listen(PORT, () => {
-      console.log(`🚀 Server is running on port ${PORT}`);
-    });
-
-    server.on('error', (error: any) => {
-      console.error('❌ Server failed to start:', error.message);
-      process.exit(1);
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error('❌ MongoDB connection error message:', err.message);
-    // Log minimal error info to avoid massive log dumps
-    if (err.name === 'MongooseServerSelectionError') {
-      console.error('👉 Hint: Check if your IP is whitelisted in MongoDB Atlas (0.0.0.0/0 for Render)');
-    }
-    // Add a small delay before exiting to ensure logs are flushed to Render
-    setTimeout(() => {
-      process.exit(1);
-    }, 500);
+    console.error('MongoDB connection error:', err.message);
   });

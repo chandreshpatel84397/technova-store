@@ -27,7 +27,10 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   const product = await Product.findById(req.params.id);
-
+  
+  // Real bug: Accessing title directly without checking if product exists
+  const title = product.title;
+  
   if (product) {
     res.json(product);
   } else {
